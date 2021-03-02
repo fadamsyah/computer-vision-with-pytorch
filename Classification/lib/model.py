@@ -5,7 +5,7 @@ import torch.nn as nn
 from .efficientnet import EfficientNet
 
 
-class ShopeeModel(nn.Module):
+class EffNetTL(nn.Module):
     def __init__(self, backbone_name='efficientnet-b0', num_classes=10, pretrained=False, head=None):
         super().__init__()
         
