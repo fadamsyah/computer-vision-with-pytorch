@@ -70,7 +70,7 @@ def train_model(device, model, dataloaders, dataset_sizes,
 
                 # statistics
                 running_loss += loss.item() * inputs.size(0)
-                running_metric += metric(labels.detach().cpu().numpy(), outputs.detach().cpu().numpy()) * inputs.size(0)
+                running_metric += metric(labels, outputs) * inputs.size(0)
                     
             if phase == 'train':
                 if scheduler: scheduler.step()
