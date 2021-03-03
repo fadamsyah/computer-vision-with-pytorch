@@ -21,19 +21,16 @@ def train_model(device, model, dataloaders, dataset_sizes,
     running_metric = 0.0
     
     # Iterate over data.
-    for inputs, labels in dataloaders['val']:
-        print("LOG 1")
+    for ii, (inputs, labels) in tqdm(enumerate(dataloaders['val']), total=dataset_sizes['val']):
         inputs = inputs.to(device, dtype=dtype_input)
         labels = labels.to(device, dtype=dtype_label)
 
         # forward
-        print("LOG 2")
         with torch.set_grad_enabled(False):
             outputs = model(inputs)
             loss = criterion(outputs, labels)
 
         # statistics
-        print("LOG 3")
         running_metric += metric(labels, outputs) * inputs.size(0)
         
     best_metric = running_metric / dataset_sizes['val']
