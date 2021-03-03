@@ -34,7 +34,7 @@ def train_model(device, model, dataloaders, dataset_sizes,
 
         # statistics
         print("LOG 3")
-        running_metric += metric(labels.detach().cpu().numpy(), outputs.detach().cpu().numpy()) * inputs.size(0)
+        running_metric += metric(labels, output) * inputs.size(0)
         
     best_metric = running_metric / dataset_sizes['val']
 
