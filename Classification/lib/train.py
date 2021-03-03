@@ -22,15 +22,18 @@ def train_model(device, model, dataloaders, dataset_sizes,
     
     # Iterate over data.
     for inputs, labels in dataloaders['val']:
+        print("LOG 1")
         inputs = inputs.to(device, dtype=dtype_input)
         labels = labels.to(device, dtype=dtype_label)
 
         # forward
+        print("LOG 2")
         with torch.set_grad_enabled(False):
             outputs = model(inputs)
             loss = criterion(outputs, labels)
 
         # statistics
+        print("LOG 3")
         running_metric += metric(labels.detach().cpu().numpy(), outputs.detach().cpu().numpy()) * inputs.size(0)
         
     best_metric = running_metric / dataset_sizes['val']
