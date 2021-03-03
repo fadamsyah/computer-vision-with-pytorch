@@ -21,7 +21,7 @@ def train_model(device, model, dataloaders, dataset_sizes,
     running_metric = 0.0
     
     # Iterate over data.
-    for ii, (inputs, labels) in tqdm(enumerate(dataloaders['val']), total=dataset_sizes['val']):
+    for ii, (inputs, labels) in tqdm(enumerate(dataloaders['val']), total=len(dataloaders['val'])):
         inputs = inputs.to(device, dtype=dtype_input)
         labels = labels.to(device, dtype=dtype_label)
 
@@ -50,7 +50,7 @@ def train_model(device, model, dataloaders, dataset_sizes,
             running_metric = 0.0
 
             # Iterate over data.
-            for ii, (inputs, labels) in tqdm(enumerate(dataloaders[phase]), total=dataset_sizes[phase]):
+            for ii, (inputs, labels) in tqdm(enumerate(dataloaders[phase]), total=len(dataloaders[phase])):
                 inputs = inputs.to(device, dtype=dtype_input)
                 labels = labels.to(device, dtype=dtype_label)
 
@@ -95,8 +95,8 @@ def train_model(device, model, dataloaders, dataset_sizes,
         print('Epoch {}/{} - loss: {:.4f} - val_loss: {:.4f} - {}: {:.4f} - val_{}: {:.4f}'.format(
             epoch + 1, num_epochs,
             history_loss['train'], history_loss['val'],
-            metric.name, history_metric['train'],
-            metric.name, history_metric['val']))
+            metric.name, history_metric['train'][-1],
+            metric.name, history_metric['val'][-1]))
 
     time_elapsed = time.time() - since
     
