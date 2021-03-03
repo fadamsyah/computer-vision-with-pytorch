@@ -14,7 +14,8 @@ def train_model(device, model, dataloaders, dataset_sizes,
     history_loss = {'train': [], 'val': []}
     history_metric = {'train': [], 'val': []}
 
-    # Find the initial score      
+    # Find the initial score  
+    print("Find the best initial score ...")    
     best_model_wts = copy.deepcopy(model.state_dict())
     model.eval()
     running_metric = 0.0
@@ -36,6 +37,7 @@ def train_model(device, model, dataloaders, dataset_sizes,
 
     # Training loop
     # Iterate over num_epochs
+    print("Start training ...")
     for epoch in range(num_epochs):
         # Each epoch has a training and validation phase
         for phase in ['train', 'val']:
