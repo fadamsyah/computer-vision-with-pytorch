@@ -18,8 +18,8 @@ def train_model(device, model, dataloaders, dataset_sizes,
     
     # Iterate over data.
     for inputs, labels in dataloaders['val']:
-        inputs = inputs.to(device, dtype=torch.float)
-        labels = labels.to(device, dtype=torch.float)
+        inputs = inputs.to(device, dtype=torch.long)
+        labels = labels.to(device, dtype=torch.long)
 
         # forward
         with torch.set_grad_enabled(False):
@@ -46,8 +46,8 @@ def train_model(device, model, dataloaders, dataset_sizes,
 
             # Iterate over data.
             for inputs, labels in dataloaders[phase]:
-                inputs = inputs.to(device, dtype=torch.float)
-                labels = labels.to(device, dtype=torch.float)
+                inputs = inputs.to(device, dtype=torch.long)
+                labels = labels.to(device, dtype=torch.long)
 
                 # zero the parameter gradients
                 optimizer.zero_grad()
