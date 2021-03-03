@@ -94,7 +94,7 @@ def train_model(device, model, dataloaders, dataset_sizes,
                     
         print('Epoch {}/{} - loss: {:.4f} - val_loss: {:.4f} - {}: {:.4f} - val_{}: {:.4f}'.format(
             epoch + 1, num_epochs,
-            history_loss['train'], history_loss['val'],
+            history_loss['train'][-1], history_loss['val'][-1],
             metric.name, history_metric['train'][-1],
             metric.name, history_metric['val'][-1]))
 
