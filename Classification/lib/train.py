@@ -5,7 +5,8 @@ import copy
 
 def train_model(device, model, dataloaders, dataset_sizes,
                 criterion, optimizer, scheduler=None,
-                metric=None, num_epochs=25, load_best_weights=True):
+                metric=None, num_epochs=25, load_best_weights=True,
+                dtype_input=torch.float, dtype_label=torch.long):
     since = time.time()
     
     history_loss = {'train': [], 'val': []}
@@ -18,8 +19,8 @@ def train_model(device, model, dataloaders, dataset_sizes,
     
     # Iterate over data.
     for inputs, labels in dataloaders['val']:
-        inputs = inputs.to(device, dtype=torch.long)
-        labels = labels.to(device, dtype=torch.long)
+        inputs = inputs.to(device, dtype=dtype_input)
+        labels = labels.to(device, dtype=dtype_label)
 
         # forward
         with torch.set_grad_enabled(False):
@@ -46,8 +47,8 @@ def train_model(device, model, dataloaders, dataset_sizes,
 
             # Iterate over data.
             for inputs, labels in dataloaders[phase]:
-                inputs = inputs.to(device, dtype=torch.long)
-                labels = labels.to(device, dtype=torch.long)
+                inputs = inputs.to(device, dtype=dtype_input)
+                labels = labels.to(device, dtype=dtype_label)
 
                 # zero the parameter gradients
                 optimizer.zero_grad()
