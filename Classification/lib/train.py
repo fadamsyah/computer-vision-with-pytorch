@@ -3,6 +3,8 @@ import torch
 import time
 import copy
 
+from tqdm import tqdm
+
 def train_model(device, model, dataloaders, dataset_sizes,
                 criterion, optimizer, scheduler=None,
                 metric=None, num_epochs=25, load_best_weights=True,
@@ -46,7 +48,7 @@ def train_model(device, model, dataloaders, dataset_sizes,
             running_metric = 0.0
 
             # Iterate over data.
-            for inputs, labels in dataloaders[phase]:
+            for ii, (inputs, labels) in tqdm(enumerate(dataloaders[phase]), total=dataset_sizes[phase]):
                 inputs = inputs.to(device, dtype=dtype_input)
                 labels = labels.to(device, dtype=dtype_label)
 
