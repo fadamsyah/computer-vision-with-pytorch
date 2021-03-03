@@ -103,4 +103,4 @@ def train_model(device, model, dataloaders, dataset_sizes,
     # load best model weights
     if load_best_weights: model.load_state_dict(best_model_wts)
     
-    return {'model': model, 'history_loss': history_loss, 'history_metric': history_metric}
+    return {'history_loss': history_loss, 'history_metric': history_metric}
