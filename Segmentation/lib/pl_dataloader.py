@@ -14,8 +14,12 @@ class CVCDataModule(pl.LightningDataModule):
             'val': transform_val
         }
         self.val_size = val_size
-        
+
     def setup(self, stage=None):
-        self.df_train, self.df_val = train_test_split(self.df, test_size=self.val_size,
-                                                      random_state=42)
+        df_train, df_val = train_test_split(self.df, test_size=self.val_size,
+                                            random_state=42)
+        self.dataset = {
+            'train': CVCClinicDB(df_train, self.transform['train']),
+            'val': CVCClinicDB(df_val, self.transform['val'])
+        }
         
