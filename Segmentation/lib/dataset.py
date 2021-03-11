@@ -1,10 +1,9 @@
-# https://www.kaggle.com/balraj98/cvcclinicdb
-
 import numpy as np
 import pandas as pd
 import torch
 import cv2
 
+# https://www.kaggle.com/balraj98/cvcclinicdb
 class CVCClinicDB(torch.utils.data.Dataset):
     def __init__(self, df, transform=None):
         self.df = df
