@@ -5,7 +5,7 @@ from .dataset import CVCClinicDB
 
 # https://www.kaggle.com/balraj98/cvcclinicdb
 class CVCDataModule(pl.LightningDataModule):
-    def __init__(self, csv_path, dir_path, val_size=0.2, transform):
+    def __init__(self, csv_path, dir_path, val_size=0.2, transform=None):
         super().__init__()
         self.df = pd.read_csv(csv_path)
         self.df = pd.DataFrame(data={'image': [os.path.join(dir_path, path) for path in self.df['png_image_path']],
