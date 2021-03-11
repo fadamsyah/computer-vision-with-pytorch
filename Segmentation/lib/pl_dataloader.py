@@ -10,7 +10,7 @@ class CVCDataModule(pl.LightningDataModule):
         super().__init__()
         self.df = pd.read_csv(csv_path)
         self.df = pd.DataFrame(data={'image': [os.path.join(dir_path, path) for path in self.df['png_image_path']],
-                                     'mask': [os.path.join(dir_path, path) for path in self.df['png_mask_path']]})        
+                                     'mask': [os.path.join(dir_path, path) for path in self.df['png_mask_path']]})
         self.transform = {
             'train': transform['train'],
             'val': transform['val']
