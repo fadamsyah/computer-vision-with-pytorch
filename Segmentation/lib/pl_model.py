@@ -16,7 +16,7 @@ class SegmentationModel(pl.LightningModule):
     def __init__(self, encoder_name='efficientnet-b2', num_classes=2, pretrained=False,
                  final_activation='linear', aspp_out_channels=1024,
                  loss=F.cross_entropy, metric=None,
-                 optim_names={'encoder': 'sgd', 'aspp': 'sgd', 'decoder': 'sgd'}):
+                 optim_names='adamw'):
         super().__init__()
         
         # Encoder
@@ -46,16 +46,13 @@ class SegmentationModel(pl.LightningModule):
 
         # Optimizer parameters
         # Default parameters of optimizers
-        adamw = {'lr': 0.001, 'betas': (0.9, 0.999), 'eps': 1e-08,
-                 'weight_decay': 0.01, 'amsgrad': False}
-        sgd = {'lr': 0.01, 'momentum': 0, 'dampening': 0,
-               'weight_decay': 0, 'nesterov': False}
         self.optim_names = optim_names
         self.optim_params = {
-            'encoder': {'adamw': copy.deepcopy(adamw), 'sgd': copy.deepcopy(sgd)},
-            'aspp': {'adamw': copy.deepcopy(adamw), 'sgd': copy.deepcopy(sgd)},
-            'decoder': {'adamw': copy.deepcopy(adamw), 'sgd': copy.deepcopy(sgd)}
-            }
+            'adamw': {'lr': 0.001, 'betas': (0.9, 0.999), 'eps': 1e-08,
+                      'weight_decay': 0.01, 'amsgrad': False},
+            'sgd': {'lr': 0.01, 'momentum': 0, 'dampening': 0,
+                    'weight_decay': 0, 'nesterov': False}
+        }
         
     def forward(self, inputs):
         # Encoder
@@ -116,22 +113,20 @@ class SegmentationModel(pl.LightningModule):
         return x
         
     def configure_optimizers(self):
-        encoder_optim = self.construct_optimizer('encoder', self.encoder.parameters())
-        aspp_optim = self.construct_optimizer('aspp', self.aspp.parameters())
-        decoder_optim = self.construct_optimizer('decoder', self.decoder.parameters())
-        return encoder_optim, aspp_optim, decoder_optim
+        optimizer = self.construct_optimizer(self.parameters())
+        return optimizer
     
-    def construct_optimizer(self, name, params):
+    def construct_optimizer(self, params):
         # Get the parameters of an optimizer
-        optim_params = self.optim_params[name][self.optim_names[name]]
+        optim_params = self.optim_params[self.optim_names]
         
-        if self.optim_names[name].lower() == 'sgd':
+        if self.optim_names.lower() == 'sgd':
             optimizer = optim.SGD(params, lr=optim_params['lr'],
                                   momentum=optim_params['momentum'], 
                                   dampening=optim_params['dampening'],
                                   weight_decay=optim_params['weight_decay'],
                                   nesterov=optim_params['nesterov'])
-        elif self.optim_names[name].lower() == 'adamw':
+        elif self.optim_names.lower() == 'adamw':
             optimizer = optim.AdamW(params, lr=optim_params['lr'],
                                     betas=optim_params['betas'],
                                     eps=optim_params['eps'],
@@ -141,10 +136,9 @@ class SegmentationModel(pl.LightningModule):
         return optimizer
     
     def configure_optimizers_parameters(self, params):
-        for param_name, optimizers in params.items():
-            for optim_name, optim_params in optimizers.items():
-                for optim_param_name, value in optim_params.items():
-                     self.optim_params[param_name][optim_name][optim_param_name] = value
+        for optim_name, optim_params in params.items():
+            for optim_param_name, value in optim_params.items():
+                    self.optim_params[optim_name][optim_param_name] = value
     
     def freeze_encoder(self):
         for param in self.encoder.parameters():
