@@ -5,13 +5,14 @@ from .dataset import CVCClinicDB
 
 # https://www.kaggle.com/balraj98/cvcclinicdb
 class CVCDataModule(pl.LightningDataModule):
-    def __init__(self, csv_path, dir_path, val_size=0.2, transform_train=None, transform_val=None):
+    def __init__(self, csv_path, dir_path, val_size=0.2, transform):
+        super().__init__()
         self.df = pd.read_csv(csv_path)
         self.df = pd.DataFrame(data={'image': [os.path.join(dir_path, path) for path in self.df['png_image_path']],
                                      'mask': [os.path.join(dir_path, path) for path in self.df['png_mask_path']]})        
         self.transform = {
-            'train': transform_train,
-            'val': transform_val
+            'train': transform['train'],
+            'val': transform['val']
         }
         self.val_size = val_size
 
