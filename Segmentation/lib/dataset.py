@@ -18,7 +18,7 @@ class CVCClinicDB(torch.utils.data.Dataset):
         
         # Open the files        
         image = cv2.cvtColor(cv2.imread(row['image']), cv2.COLOR_BGR2RGB) / 255.
-        mask = self.encode_mask(cv2.imread(row['mask'], cv2.IMREAD_GRAYSCALE) / 255.)[:,:,None]
+        mask = self.encode_mask(cv2.imread(row['mask'], cv2.IMREAD_GRAYSCALE) / 255.)[None,:,:]
         
         # Transformation
         if self.transform:
