@@ -32,4 +32,4 @@ class CVCClinicDB(torch.utils.data.Dataset):
         mask[mask >= 0.5] = 1.
         mask[mask < 0.5] = 0.
         
-        return mask.astype('float32')
+        return mask.astype('int32')
