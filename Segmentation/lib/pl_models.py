@@ -11,7 +11,7 @@ class SegmentationModel(pl.LightningModule):
         super().__init__()
         self.model = smp.FPN(encoder_name=encoder_name,
                              encoder_weights=encoder_weights,
-                             activation=activation, classes=classes
+                             activation=activation, classes=classes,
                              in_channels=in_channels)
         self.loss = loss
         self.metrics = metrics
